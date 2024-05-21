@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>PFA Calculator</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src='https://cdn.plot.ly/plotly-2.27.0.min.js'></script>
+    <script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    tags : 'ams',
+  }
+};
+</script>
+<script type="text/javascript" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<!-- Online libraries and dependencies -->
+<script src='https://abubujs.org/libs/Abubu.latest.js'
+	    type='text/javascript'></script>
+<script 
+src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js'  
+type="text/javascript" charset="utf-8">
+</script>
+<script 
+    src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/mode-glsl.js'>
+</script>
+<script 
+    src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/theme-tomorrow.js'>
+</script>
+<script
+    src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/keybinding-vim.js'>
+</script>
+<script 
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-umd-min.js"></script>
+<!-- local version of dependencies -->
+<!--
+<script src='/abubujs/libs/Abubu.latest.js'
+	    type='text/javascript'></script>
+<script 
+src='/libs/cdnjs.cloudflare.com_ajax_libs_ace_1.4.5_ace.js'  
+type="text/javascript" charset="utf-8">
+</script>
+<script 
+    src='/libs/cdnjs.cloudflare.com_ajax_libs_ace_1.4.5_mode-glsl.js'>
+</script>
+<script 
+    src='/libs/cdnjs.cloudflare.com_ajax_libs_ace_1.4.5_theme-tomorrow.js'>
+</script>
+<script
+    src='/libs/cdnjs.cloudflare.com_ajax_libs_ace_1.4.5_keybinding-vim.js'>
+</script>
+<script 
+    src='/libs/ajax.googleapis.com_ajax_libs_jquery_3.4.1_jquery.min.js'>
+</script>
+<script src='/libs/cdnjs.cloudflare.com_ajax_libs_jszip_3.6.0_jszip.min.js'></script>
+<script src='/libs/cdn.jsdelivr.net_npm_underscore@1.13.6_underscore-umd-min.js'></script>
+-->
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<link rel="stylesheet" href="app.css">
+
+</head>
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- main body of the html -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<body onload='runProgram()'>
+<div class=content>
+<h1>Estimation of Irreversible Electroporation (IRE) Electric Field
+    Threshold (EFT), Area and associated Adiabatic Heating (AH)
+    dependent on Pulsed Electric Field (PEF) waveform parameters</h1>
+
+<table>
+    <tr>
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- col1 -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+        <td class=col1><div>
+<h2>PFA Calculator Program</h2>
+<!--====================================================================-->
+<!-- PFA Calculator -->
+<!--====================================================================-->
+<h3>Instructions</h3>
+<ol>
+    <li>For details on how to use the hiPSC-CMs PFA Tool, read the
+    <a href='context_of_use.html'>Context of Use (CoU)</a>,which includes
+    <a href="context_of_use.html#limitations">limitations of use</a>.</li>
+    <li>Insert the Pulsed Field Ablation (PFA) input parameters in the
+    “PFA input parameters” table. Hover the information icons next to each
+    section header for parameters definition and range of use. Check the
+    changes you make to the “PFA input parameters” table in the waveform
+    parameter interactive visual.</li>
+    <li>Read the outputs in the “Program outputs” table to obtain 
+        the estimated lethal Electric Field Threshold (EFT), 
+        Absorbed Dose (AD), and Adiabatic Heating (AH) 
+        produced by the set of input parameter selected.</li>
+    <li>For an estimate of the cell death area due to irreversible 
+        electroporation (IRE), insert the phase volage, $V_p$, in “Electric 
+        field distribution and cell-death area estimation” section. 
+        The electric field map will change accordingly showing the 
+        estimated cell death area for the set of pulse parameter 
+        selected and the specific electrode geometry used in this tool.</li>
+</ol>
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!-- PFA inputs -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<h3>PFA input parameters</h2>
+<div>
+    <table class='inputs'>
+        <tr><td class=tooltip>No. of Pulses<i class="material-icons">info</i>
+                    <span class=tooltiptext>Number of biphasic pulses in a
+                        train (50-400).
+                    </span>
+            </td>
+            <td></td>
+            <td><input  type=number
+                        id="no_pulses"
+                        value='50'
+                        step=1
+                        min=50
+                        max=400></td></tr>
+        <tr><td class=tooltip>Phase duration<i class="material-icons">info</i>
+                    <span class=tooltiptext>Duration of one phase in&nbsp;$[\mu s]$
+                        composing the biphasic pulse $(0.2-10 \mu s)$.
+                    </span>
+            </td>
+            <td>[$\mu s$]</td>
+            <td><input  type=number
+                        id="phaseDuration"
+                        value='0.2'
+                        step='0.1'
+                        min='0.2'
+                        max='10'></td></tr>
+        <tr><td class=tooltip>PRF<i class="material-icons">info</i>
+                    <span class=tooltiptext>Pulse Repetition Frequency in $[kHz]$:
+                        inverse of the time between the beginning of two
+                        consecutive pulses $(2-200 kHz)$.
+                </span></td>
+            <td>[$kHz$]</td>
+            <td><input  type=number
+                        id="prf"
+                        value='200'
+                        step=1
+                        min=2
+                        max=200></td></tr>
+        <tr><td class=tooltip>Interphase duration<i class="material-icons">info</i>
+                    <span class=tooltiptext>Time between the two phases with opposing
+                        polarities in a single pulse $(=1 \mu s)$.
+                    </span>
+            </td>
+            <td>[$\mu s$]</td>
+            <td><input  readonly
+                        type=number
+                        id="ip_duration"
+                        value='1.0'
+                        min='1.0'
+                        max='1.0'
+                        step='1.0'></td></tr>
+        <tr><td class=tooltip>Density<i class="material-icons">info</i>
+                <span class=tooltiptext>Mass density of the sample under test measured
+                    in $[g/cm^3]$. Use values from your experimental settings.
+                    If measurements are not available consider using literature,
+                    e.g, <a href="https://itis.swiss/virtual-population/tissue-properties/database/density/">IT'IS density database.</a></span></td>
+            <td>[$g/cm^3$]</td><td>
+            <input      type=number
+                        id="density"
+                        value='1.0'
+                        step='0.01'
+                        min='0.0'></td></tr>
+        <tr><td class=tooltip>Electrical Conductivity<i class="material-icons">info</i>
+                <span class=tooltiptext>Electrical conductivity of the sample under test measured in $[mS/cm]$. Use values from your experimental settings. If measurements 
+        are not available consider using literature, e.g. 
+        <a href="https://itis.swiss/virtual-population/tissue-properties/database/dielectric-properties">the dialectric properties database from IT'IS</a></span></td>
+            <td>[$mS/cm$]</td>
+            <td><input  type=number
+                        id="conductivity"
+                        value='23'
+                        step='0.1'
+                        min='0.0'></td></tr>
+    </table>
+</div>
+<div class=error style='color:red;background-color:yellow'></div>
+<div id='inputNote' class=note style='color:black;background-color:lightgrey'></div>
+
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!-- ideal waveform -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<h3>Ideal waveform parameter description and interactive
+visual representation</h3>
+<table  class='idealWaveForm'>
+    <tr>
+        <td style='min-width:200px; max-width:300px;width:50%'>
+        <div>
+            <img src='resources/schematic.png' width=100% class='center'>
+<p>The schematic above, graphically displays how the parameters of
+a train of biphasic pulses are defined.</p></div></td>
+        <td style="min-width:500px;">
+            <div id=idealWaveformPlot style="height:300px;"></div>
+        </td>
+    </tr>
+</table>
+
+        </div></td><!--end of col1 -->
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- col2 -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+        <td class=col2><div>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!-- Program outputs -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<h3>Program outputs</h3>
+<div>
+    <table class='outputs'>
+        <tr><td class=tooltip>Lethal EFT<i class="material-icons">info</i>
+                <span class=tooltiptext>Lethal Electric Field Threshold estimated from in vitro experiments on hiPSC-CMs measured in $[kV/cm]$.</span></td>
+            <td>[$kV/cm$]</td>
+            <td id='eft' class='result'></td>
+            <td id='eft_min'  class=res_min_max></td>
+            <td id='eft_max'  class=res_min_max></td>
+        </tr>
+        <tr><td class=tooltip>AD<i class="material-icons">info</i>
+            <span class=tooltiptext>Absorbed Dose at the lethal EFT, 
+            measured in $[mJ/g]$, computed using the analytical Eq&nbsp;(1)
+            presented in the <a href='context_of_use.html'>CoU</a>.</span></td>
+            <td>[$mJ/g$]</td>
+            <td id='ad' class='result'></td>
+            <td id='ad_min' class=res_min_max></td>
+            <td id='ad_max' class=res_min_max></td>
+        </tr>
+        <tr><td class=tooltip>AH<i class="material-icons">info</i>
+            <span class=tooltiptext>Adiabatic Heating at the lethal EFT, 
+            measured in $[C]$, computed using the analytical Eq&nbsp;(2) presented in the <a href='context_of_use.html'>CoU</a>.</span></td>
+            <td>[$C$]</td>
+            <td id='ah' class='result'></td>
+            <td id='ah_min' class=res_min_max></td>
+            <td id='ah_max' class=res_min_max></td>
+        </tr>
+    </table>
+</div>
+<div class=error style='color:red;background-color:yellow'></div>
+
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!-- Electricl field distribution -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<h3>Electric field distribution and cell-death area estimation</h3>
+<p>Here, we have used the estimated lethal EFTs from this program, and combined the results with numerical simulations of the electric field, to estimate the cell-death area as an examplar.</p>
+
+<table class='outputs area'>
+    <tr>
+        <td class=tooltip><b>Input:</b> $V_p$<i class="material-icons">info</i>
+            <span class=tooltiptext>Input phase amplitude measured in [$V$] (100-1000&nbsp;V, in increments of 10&nbsp;V.</span></td>
+        <td>$[V]$</td>
+        <td><input type=number min=100 max=1000 step=10 value='600' id='input_vp' name='input_vp'></td>
+    </tr>
+    <tr>
+        <td class=tooltip><b>Output:</b> Est. cell death area<i class="material-icons">info</i>
+            <span class=tooltiptext>Esitmated cell death area based on the calculated lethal EFTs measured in $mm^2$. The min and max value are calculated based on the isolines obtained using the max and min value of lethal EFT, respectively.</span></td>
+        <td>$[mm^2]$</td>
+        <td class='area result'        width=100px id='lesionArea'></td>
+        <td class='area res_min_max'   width=150px id='lesionArea_min'></td>
+        <td class='area res_min_max'   id='lesionArea_max'></td>
+    </tr>
+</table>
+
+<div id='areaError' class='error area' style='color:red;background-color:yellow'></div>
+<div id='areaNote' class='note area' style='color:black;background-color:#ffffc6'></div>
+
+
+<div>
+<table class='lesion'>
+    <tr>
+        <td></td>
+        <td><img src='resources/10mm.png' width=500px></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><div style='position:relative;'><img src='resources/8mm.png' style='position:absolute;right:8px;top:-200px;' height=400px></div></td>
+        <td>
+            <canvas id='efield_out' width='500px' height='400px'>
+                Your browser does not support canvas elements.
+            </canvas>
+        </td>
+        <td><img src='resources/map_key.png' width=150px></td>
+    </tr>
+    <tr>
+        <td>0</td>
+        <td><img src='resources/colormap_gray.png' width=100%></td>
+        <td><span id='efield_max'>14.622 [kV/cm]</span></td>
+    </tr>
+</table>
+</div>
+<p>The map above displays the norm of the electric field in grayscale. The predicted cell-death region is highlighted in red, green, and blue, based on the estimated lethal EFT and the stregth of the electric field at the same point.</p>
+        </div></td><!-- end of col2 -->
+    </tr>
+</table>
+
+</div> <!-- end of content -->
+<!-- ***************************************************************** -->
+<script id='processLesion' type='x-shader-fragment'>#version 300 es
+/*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * processLesion.frag   :    process the lesion area
+ * 
+ * PROGRAMMER   : ABOUZAR KABOUDIAN
+ * DATE         : Wed 06 Dec 2023 12:32:47 (EST)
+ * PLACE        : Maryland, USA.
+ *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ */
+precision highp float ;
+precision highp int ;
+
+/*------------------------------------------------------------------------
+ * interface variables
+ *------------------------------------------------------------------------
+ */
+in vec2 cc ;
+
+uniform sampler2D   efield_map ;
+uniform float       Vp, eft, eft_min, eft_max ;
+layout (location=0) out vec4 ocolor ;
+
+bool inElectrode(float c, float r1,float r2){
+    vec2 pp = cc*vec2(10.,8.) ;
+    float l1 =length(pp-vec2(c,4.)) ;
+    float l2 =length(pp-vec2(10.-c,4.)) ;
+
+    return ( (l1<r2 && l1>r1)  ||
+             (l2<r2 && l2>r1) ) ;
+}
+
+/*========================================================================
+ * main body of the shader
+ *========================================================================
+ */
+void main(){
+    vec4 icolor = texture(efield_map, cc) ;
+   
+    float E =icolor.r*1.4622e-2*Vp ; 
+
+
+    icolor.rgb = vec3( E/14.622) ;
+    if (E >eft_max){
+        icolor = vec4(1.,0.,0.,1.) ;
+    }else if (E >eft){
+        icolor = vec4(0.,1.,0.,1.) ;
+    }else if (E >eft_min){
+        icolor = vec4(0.,0.,1.,1.) ;
+    }
+
+    vec2 pp = cc*vec2(5.,4.) ;
+    float radius = 0.36 ;
+    float center = 2.071*2. ;
+    
+    // icolor = vec4(0.) ;
+    if ( inElectrode(center, 0.,radius) ){
+        icolor =vec4(83./255.,104./255.,121./255.,1.) ;
+    }
+    if ( inElectrode(center, 0.6*radius,0.9*radius) ){
+        icolor =vec4(254./255.,247./255.,193./255.,1.) ;
+    }
+
+    if ( length(cc*vec2(10,8)-vec2(5,4)) > 3.4 )
+        icolor = vec4(1.,0.859,0.596,1.) ;
+    
+    //if ( inElectrode
+    ocolor = icolor ;
+    return ;
+}
+</script><!-- end of processLesion shader's source code -->
+
+<!-- ***************************************************************** -->
+<script id='countLesionCols' type='x-shader-fragment'>#version 300 es
+/*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ * countLesionCols.frag     :   count the pixels in the columns where 
+ *                              there is marked lesion
+ * 
+ * PROGRAMMER   : ABOUZAR KABOUDIAN
+ * DATE         : Wed 06 Dec 2023 14:12:09 (EST)
+ * PLACE        : Maryland, USA.
+ *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+ */
+
+precision highp float ;
+precision highp int ;
+
+/*------------------------------------------------------------------------
+ * interface variables
+ *------------------------------------------------------------------------
+ */
+in vec2 cc ;
+
+uniform sampler2D   efield_map ;
+uniform float       Vp, eft, eft_min, eft_max ;
+layout (location=0) out vec4 ocolor ;
+
+/*========================================================================
+ * main body of the shader
+ *========================================================================
+ */
+void main(){
+    vec4  icolor ; 
+    ivec2 size  = textureSize(efield_map, 0) ;
+
+    vec4 color = vec4(0) ;
+    float E ;
+
+    for(int i=0 ; i<size.y ;i++){
+        vec2 pos = vec2(cc.x, (0.5+float(i))/float(size.y)) ;
+
+        icolor =  texture( efield_map, pos)  ;
+        E =icolor.r*1.4622e-2*Vp ; 
+
+        // out of lens
+        if ( length(pos*vec2(10,8)-vec2(5,4)) > 3.4 ){
+            E = 0. ;
+        }
+
+        if (E >eft_max){
+            color.r += 1. ;
+        }else if (E >eft){
+            color.g += 1. ;
+        }else if (E >eft_min){
+            color.b += 1. ;
+        }
+    }
+    
+    ocolor = color ;
+    return ;
+}
+</script><!-- end of countLesionCols shader's source code -->
+
+<!-- ***************************************************************** -->
+<script id='reduceRow' type='x-shader-fragment'>#version 300 es
+
+precision highp float ;
+precision highp int ;
+
+uniform sampler2D icolor ;
+in vec2 cc ;
+
+
+out vec4 ocolor  ;
+
+
+void main(){
+    ivec2 size = textureSize( icolor , 0 ) ;
+    vec4 color = vec4(0) ;
+    vec2 pos ;
+    for(int i=0 ; i<size.x ; i++){
+        color += texture(icolor, vec2((0.5+float(i))/float(size.x),0.5)) ;
+    }
+    
+    ocolor = color ;
+}
+</script><!-- end of reduceRow shader's source code -->
+
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- main body of the calculator program script -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<script>
+let env = {} ;
+
+/*========================================================================
+ * get the source code for fragment shaders
+ *========================================================================
+ */
+function source( id ){
+    return document.getElementById( id ).innerHTML ;
+}
+
+/*=========================================================================
+ * throwError: displays an error with the error number "num" and error 
+ *              "message". Additionally, this function ensures no output is
+ *              displayed when an error is encounterred.
+ *=========================================================================
+ */
+function throwError(num, message,area=false){
+    let errMsg = "<p><b>Error No. "+num+"$^*$ :</b>\t"+message+"</p>" ; 
+    if (!area){
+        $(".error").html(errMsg) ;
+        $(".result").html("Error No. "+num+"$^*$") ;
+        $(".res_min_max").html("") ;
+        env.noGeneralError  = false ;
+    }else{
+        $(".result.area").html("Error No. "+num+"$^*$") ;
+        $(".res_min_max.area").html("") ;
+        $(".error.area").html(errMsg) ; 
+        env.noAreaError = false ;
+    }
+    MathJax.typeset();
+}
+
+/*========================================================================
+ * throwWarning: displays a warning message.
+ *========================================================================
+ */
+function throwWarning(num, message, area=false){
+    let msg = "<p><b>Warning No. "+num+":</b>\t"+message+"</p>" ;
+    if (!area){
+        $(".error").html(msg) ;
+        env.noGeneralError  = false ;
+    }else{
+        $(".error.area").html(errMsg) ; 
+        env.noAreaError = false ;
+    }
+        
+    MathJax.typeset();
+}
+
+/*========================================================================
+ * throwAreaError:
+ *========================================================================
+ */
+function throwAreaError(num, msg, ids){
+    let errMsg = "<p><b>Error No. "+num+"$^*$ :</b>\t"+msg+"</p>" ;
+    console.log('here');
+    $("#areaError").html(errMsg) ;
+
+    for(let i of ids){
+        $("#"+i).html("Error No. "+num+"$^*$") ;
+    }
+    env.noAreaError = false ;
+    MathJax.typeset();
+}
+
+/*========================================================================
+ * throwNote:
+ *========================================================================
+ */
+function throwNote(num, msg, ids){
+    let noteMsg = "<p><b>Error No. "+num+"$^*$ :</b>\t"+msg+"</p>" ;
+    console.log('here');
+    $("#areaError").html(noteMsg) ;
+
+    for(let i of ids){
+        $("#"+i).html("Error No. "+num+"$^*$") ;
+    }
+    env.noAreaError = false ;
+    MathJax.typeset();
+}
+
+
+
+
+/*=========================================================================
+ * getNum(id): get a number from an input field with its corresponding id
+ *=========================================================================
+ */
+function getNum(id){
+    return parseFloat($("#"+id).val()) ;
+}
+
+/*=========================================================================
+ * Log-Log Fitting  
+ *=========================================================================
+ */
+    
+let feature_coefs = [   
+    -0.33115965385183427 ,
+    -0.5105374744505103 ,
+     0.020034570371224858 ] ;
+    
+let intercept = 2.4178579179273973 ; 
+    
+/*=========================================================================
+ * calculateEFT: calculates lethal eft from
+ *                  - no_pulses : number of pulses
+ *                  - duration  : phase duration
+ *                  - PRF       : pulse repetition frequency
+ *=========================================================================
+ */
+function calculateEFT(no_pulses, duration, PRF){
+    let log_eft=intercept ;
+    log_eft += feature_coefs[0]*Math.log(no_pulses)
+            +  feature_coefs[1]*Math.log(duration)
+            +  feature_coefs[2]*Math.log(PRF) ;
+    return Math.exp(log_eft) ;
+}
+
+/*========================================================================
+ * estimateMaxEftError: Estimate maximum error based on the predicted
+ * lethal eft
+ *========================================================================
+ */
+function estimateMaxEftError(EFT){
+    let x1 = 0.482902 ; let y1 = 0.159829 ;
+    let x2 = 3.558332 ; let y2 = 1.158657;
+
+    if ( EFT< 3.56 ){
+        return (y2-y1)*(EFT-x1)/(x2-x1) + y1 ;
+    }else
+        return 0.955 ;
+
+}
+
+/*=========================================================================
+ * calculateOutput: read the information from the input table and 
+ *                  calculates all outputs, and prints to the output table.
+ *                  Additionally, all inputs are checked here to be in the 
+ *                  experimental range. If, one is out of range, the 
+ *                  program displays an appropriate error message and will
+ *                  not display any output
+ *=========================================================================
+ */
+function calculateOutput(){
+    
+    env.noGeneralError  = true ;
+    env.noAreaError     = true ;
+
+/*-------------------------------------------------------------------------
+ * reading all the numbers from the input table
+ *-------------------------------------------------------------------------
+ */
+    let no_pulses   = getNum( "no_pulses"       ) ;
+    let duration    = getNum( "phaseDuration"   ) ;
+    let ip_duration = getNum( "ip_duration"     ) ;
+    let prf         = getNum( "prf"             ) ;
+    let density     = getNum( "density"         ) ;
+    let conductivity= getNum( "conductivity"    ) ;
+
+/*-------------------------------------------------------------------------
+ * checking all the inputs to lie in the experimental range
+ *-------------------------------------------------------------------------
+ */
+    if (no_pulses<50){
+        $("#no_pulses").val(50) ;
+        no_pulses = 50 ;
+        
+        alert(  "No of pulses should be greater than 50.\n"+
+                "Resetting No. of Pulses back to 50") ;
+    }
+
+    if (no_pulses>400){
+        $("#no_pulses").val(400) ;
+        no_pulses = 400 ;
+
+        alert("No of pulses should be less than 400.\n"+
+             "Resetting No. of Pulses back to 400") ;
+    }
+        
+    if (duration <0.2){
+        duration = 0.2 ;
+        $("#phaseDuration").val(0.2) ;
+        alert(  "Phase duration should be greater than 0.2 us.\n"+
+                "Resetting Phase duration back to 0.2 us." ) ;
+    }
+
+    if (duration >10){
+        duration = 10 ;
+        $("#phaseDuration").val(10.0) ;
+        alert(  "Phase duration should be less than 10 us.\n"+
+                "Resetting Phase duration back to 10 us." ) ;
+    }
+
+    if (prf<2.0){
+        prf = 2.0 ;
+        $("#prf").val(2.0) ;
+        alert(  "PRF should be greater than 2.0 kHz.\n"
+            +   "Resetting PRF back to 2.0 kHz.") ;
+    }
+    
+    if (prf>200.0){
+        prf = 200.0 ;
+        $("#prf").val(200.0) ;
+        alert(  "PRF should be less than 200.0 kHz.\n"
+            +   "Resetting PRF back to 200.0 kHz.") ;
+    }
+
+    if (duration> (1000./prf)){
+        throwError(400, 
+            "Phase duration > pulse repetition period!"     ) ;
+        return ;
+    }
+    
+/*-------------------------------------------------------------------------
+ * caculating outputs 
+ *-------------------------------------------------------------------------
+ */
+    let eft     = calculateEFT(no_pulses,duration,prf) ;
+    let eft_error = estimateMaxEftError(eft) ;
+    let eft_max = eft + eft_error ;
+    let eft_min = eft - eft_error ;
+    
+    let sar     = (eft*eft)*conductivity/density ;
+    let sar_max = (eft_max**2)*conductivity/density ;
+    let sar_min = (eft_min**2)*conductivity/density ;
+    
+    let ad      = sar*duration*2*no_pulses ;
+    let ad_max  = sar_max*duration*2*no_pulses ;
+    let ad_min  = sar_min*duration*2*no_pulses ;
+    
+    let ah      = ad*0.24/1000. ;
+    let ah_max  = ad_max*0.24/1000. ;
+    let ah_min  = ad_min*0.24/1000. ;
+   
+/*-------------------------------------------------------------------------
+ * checking if input produces predictions in the experimental range 
+ *-------------------------------------------------------------------------
+ */
+    if (eft <0.323072612 || eft > 8.060818787){
+        throwError(1000,
+            "Input produced predictions out of the experimental range!") ;
+        return ;
+    }
+
+    if (eft_min < 0){
+        throwError(1010,
+            "Input produced predictions out of the experimental range!") ;
+        return ;
+    }
+
+/*-------------------------------------------------------------------------
+ * displaying the results
+ *-------------------------------------------------------------------------
+ */
+    $("#eft"        ).html(         eft.toPrecision(5)      ) ;
+    $("#eft_min"    ).html("Min = "+eft_min.toPrecision(5)  ) ;
+    $("#eft_max"    ).html("Max = "+eft_max.toPrecision(5)  ) ;
+
+    $("#ad"         ).html(         ad.toPrecision(5)       )
+    $("#ad_min"     ).html("Min = "+ad_min.toPrecision(5)   ) ;
+    $("#ad_max"     ).html("Max = "+ad_max.toPrecision(5)   ) ;
+
+    $("#ah"         ).html(         ah.toPrecision(5)       )
+    $("#ah_min"     ).html("Min = "+ah_min.toPrecision(5)   ) ;
+    $("#ah_max"     ).html("Max = "+ah_max.toPrecision(5)   ) ;
+
+/*------------------------------------------------------------------------
+ * Input Vp and Lesion Area Calculation
+ *------------------------------------------------------------------------
+ */
+    env.Vp = getNum("input_vp") ;
+    env.Emax= env.Vp*1.4622e-2 ;
+
+    env.efield.uniforms.Vp.value = env.Vp ;
+    env.efield.uniforms.eft.value = eft ;
+    env.efield.uniforms.eft_min.value = eft_min ;
+    env.efield.uniforms.eft_max.value = eft_max ;
+
+    env.sumLesionCols.uniforms.Vp.value = env.Vp ;
+    env.sumLesionCols.uniforms.eft.value = eft ;
+    env.sumLesionCols.uniforms.eft_min.value = eft_min ;
+    env.sumLesionCols.uniforms.eft_max.value = eft_max ;
+
+    env.efield.render() ;
+
+    env.sumLesionCols.render() ;
+    env.reduceLesionRow.render() ;
+
+    env.ctx.drawImage(env.efield_out, 0,0) ; 
+    let data = env.ctx.getImageData(env.efield_out.width/2,0.075*env.efield_out.height+5,1,1).data ;
+    let rChannel  = data[0] ;
+    let gChannel  = data[1] ;
+    let bChannel  = data[2] ;
+    
+    let sumArray = env.lesionSum.value ; 
+    let lesionArea_min  = sumArray[0] ;
+    let lesionArea      = lesionArea_min + sumArray[1] ;
+    let lesionArea_max  = lesionArea + sumArray[2] ;
+
+    /*  The calculations are based on the fact that the input 
+        image is 10x8 mm in size.                                */
+    let areaOfOnePixel = 80./(env.img.width*env.img.height) ;
+    lesionArea_min *= areaOfOnePixel ;
+
+    lesionArea_max *= areaOfOnePixel ;
+    lesionArea     *= areaOfOnePixel ;
+    $("#lesionArea").html(lesionArea.toPrecision(3)) ;  
+    $("#lesionArea_min").html('Min = '+lesionArea_min.toPrecision(3)) ;  
+    $("#lesionArea_max").html('Max = '+lesionArea_max.toPrecision(3)) ;  
+
+    $("#areaNote").html("") ;
+
+    if (bChannel>200){
+        $("#lesionArea_max").html('Max $ \\ge $ '+lesionArea_max.toPrecision(3)) ; 
+        $("#areaNote").html("<p><b>Important Note:</b> The lesion area associated with min. estimated EFT is larger the bounds of the field of view.</p>" ) ;
+    }
+    if( gChannel>200){
+        $("#lesionArea").html("$ \\ge $ " + lesionArea.toPrecision(3)) ; 
+        $("#lesionArea_max").html('Max $ \\ge $ '+lesionArea_max.toPrecision(3)) ; 
+
+        $("#areaNote").html("<p><b>Important Note:</b> Lesion area associated with min. & mean estimated EFT is larger the bounds of the field of view.</p>") ;
+    }
+
+    if(rChannel>200){
+        $("#lesionArea").html("$ \\ge $ " + lesionArea.toPrecision(3)) ; 
+        $("#lesionArea_max").html('Max $ \\ge $ '+lesionArea_max.toPrecision(3)) ; 
+        $("#lesionArea_min").html('Min $ \\ge $ '+lesionArea_min.toPrecision(3)) ; 
+
+        $("#areaNote").html("<p><b>Important Note:</b> Lesion area associated with min., mean, and max. estimated EFT is larger the bounds of the field of view.") ;
+    }
+
+    if(env.noGeneralError){
+        $(".error:not(.area)").html("") ;
+    }
+    if(env.noAreaError){
+        $("#areaError").html("") ;
+    }
+
+    MathJax.typeset() ;
+
+    return ;
+}
+
+/*=========================================================================
+ * when the document is ready, we run this function
+ *=========================================================================
+ */
+function runProgram(){
+//$(document).ready(function(){
+
+/*-------------------------------------------------------------------------
+ * Setting the style of input and output tables
+ *-------------------------------------------------------------------------
+ */
+    $("table:not(.refs):not(.lesion) tr td:nth-child(2)").css("text-align", 'left') ;
+    $("table:not(.refs):not(.lesion) tr td:nth-child(1)").css("min-width", '180px') ;
+    $("table:not(.refs):not(.lesion) tr td:nth-child(2)").css("min-width", '80px') ;
+    $("table:not(.refs):not(.lesion) tr td:nth-child(3)").css("min-width", '150px') ;
+
+    $("input").css("min-width",'150px') ;
+    $("table:not(.inputDiv):not(.refs):not(.lesion) tr:nth-child(odd)")
+        .css("background-color", '#dddddd') ;
+    $("table[class='outputs'] tr td:nth-child(3)")
+        .css("min-width", '100px') ;
+    $("table[class='outputs'] tr td:nth-child(3)")
+        .css('max-width','110px') ;
+    $("table[class='outputs'] tr td:nth-child(4)")
+        .css("min-width", '140px') ;
+    $("table[class='outputs'] tr td:nth-child(5)")
+        .css("min-width", '140px') ;
+    $("table[class='inputs'] tr td:nth-child(3)")
+            .css("background-color", 'white') ;
+
+    $("#error")
+        .css('max-width',650)
+        .css('border-radius','5px');
+
+    $("table[class=refs] td:nth-child(1)").css("min-width", '20px') ;
+    $("table[class=refs] td").css("text-align", 'left') ;
+    $("table[class=refs] td").css("vertical-align", 'top') ;
+
+
+    $("table[class=idealWaveForm] tr").css('background-color','white') ;
+    $("table[class=idealWaveForm] td:nth-child(2)")
+        .css('min-width','500px') ;
+
+    $("table[class=lesion] tr").css('background-color','white') ;
+
+    $("table[class=lesion] td:nth-child(1)").css('text-align','right') ;
+    $("table[class=lesion] td:nth-child(3)").css('text-align','left') ;
+
+/*-------------------------------------------------------------------------
+ * Callback function whenever an input is modified
+ *-------------------------------------------------------------------------
+ */
+    $("input").on('change',()=>{
+        calculateOutput();
+        drawWaveform();
+        MathJax.typeset() ;
+    }) ;
+     
+    $("#input_vp").on('change', ()=>{
+        calculateOutput();
+        drawWaveform();
+        MathJax.typeset() ;
+    }) ;
+
+
+    // load the electric field
+    let img = new Image() ;
+    //img.src = 'https://kaboudian.github.io/pngs/scaled_efield_norm_2.png' ;
+    img.src = 'https://dbp-osel.github.io/PFACalculatorTool/resources//scaled_efield_norm_2.png' ;
+    img.crossOrigin = '' ;
+    env.img = img ;
+
+    // carry out the rest of the definitions when the image is loaded
+    img.onload = ()=>{
+        env.width = img.width ;
+        env.height= img.height ;
+        env.efield_out = document.getElementById( 'efield_out') ;
+
+        let c = document.createElement('canvas') ;
+        c.width = env.width ;
+        c.height= env.height ;
+        let ctx = c.getContext('2d') ;
+        ctx.drawImage(img, 0,0) ;
+        env.imgData = ctx.getImageData(0,0,c.width, c.height) ;
+        env.data = new Float32Array(env.imgData);
+
+        env.efield_map  = new Abubu.Float32Texture(env.width, env.height, 
+                {data: env.imgData}) ;
+        env.lesionCSum  = new Abubu.Float32Texture(img.width, 1) ;
+        env.lesionSum   = new Abubu.Float32Texture(1,1, 
+                    {pairable: true}) ;
+        env.eft         = 0.55 ;
+        env.eft_min     = 0.49 ;
+        env.eft_max     = 0.60 ;
+        env.Vp          = 100 ;
+
+        // secondary canvas for reading pixels of efield_out .............
+        env.cnvs = document.createElement('canvas') ;
+        env.ctx  = env.cnvs.getContext('2d') ;
+        env.cnvs.width= env.width ;
+        env.cnvs.height= env.height ;
+
+        // draw the electric field and lesion area .......................
+        env.efield = new Abubu.Solver({
+            fragmentShader: source('processLesion') ,
+            uniforms : {
+                efield_map  : { type : 't', value : env.efield_map  } ,
+                Vp          : { type : 'f', value : env.Vp          } ,
+                eft         : { type : 'f', value : env.eft         } ,
+                eft_min     : { type : 'f', value : env.eft_min     } ,
+                eft_max     : { type : 'f', value : env.eft_max     } ,
+            } ,
+            canvas : document.getElementById('efield_out' ) ,
+        } ) ;
+
+        // Do a columnwise reduction of the lesion pixels ................
+        env.sumLesionCols = new Abubu.Solver({
+            fragmentShader: source('countLesionCols') ,
+            uniforms : {
+                efield_map  : { type : 't', value : env.efield_map  } ,
+                Vp          : { type : 'f', value : env.Vp          } ,
+                eft         : { type : 'f', value : env.eft         } ,
+                eft_min     : { type : 'f', value : env.eft_min     } ,
+                eft_max     : { type : 'f', value : env.eft_max     } ,
+            } ,
+            targets:{
+                ocolor      : { location :0, target : env.lesionCSum } ,
+            } ,
+        } ) ;
+
+        // Do a rowwise reduction of the lesion pixels ...................
+        env.reduceLesionRow = new Abubu.Solver({
+            fragmentShader: source('reduceRow') ,
+            uniforms : {
+                icolor      : { type : 't', value : env.lesionCSum  } ,
+            } ,
+            targets:{
+                ocolor      : { location :0, target : env.lesionSum } ,
+            } ,
+        } ) ;
+
+
+        // calculate the output and update the figures ...................
+        calculateOutput() ;    
+        window.PlotlyConfig = {MathJaxConfig: 'local'}
+        drawWaveform();
+    }
+} 
+
+
+/*========================================================================
+ * calculatePulse: calculates the pulse value at time t_in
+ *========================================================================
+ */
+function calculatePulse(t_in){
+    let duration    = getNum( "phaseDuration"   ) ;
+    let ip_duration = getNum( "ip_duration"     ) ;
+    let prf         = getNum( "prf"             ) ;
+    prp         = 1.e3/(prf) ;
+
+    
+    let n_start = duration+ip_duration ; /* negative pulse start time */
+    let n_end   = duration*2.+ip_duration ;
+
+
+    let pulse_duration = n_end ;        /* duration of a biphasic pulse */
+    let next_pulse_start= n_end + prp ; /* start time of the next biphasic pulse */
+
+    let np = Math.floor(t_in/next_pulse_start) ; 
+    let t = t_in-np*next_pulse_start ;
+
+    if ( t< duration ){
+        return 1. ;
+    }
+
+    if (t< n_start){
+        return 0 ;
+    }
+
+    if (t< n_end ){
+        return -1. ;
+    }
+    
+    return 0 ;
+
+}
+
+/*========================================================================
+ * drawWaveForm
+ *========================================================================
+ */
+function drawWaveform(){
+    let waveformPlot = document.getElementById('idealWaveformPlot');
+    let duration    = getNum("phaseDuration"   ) ;
+    let ip_duration = getNum( "ip_duration"     ) ;
+    
+    let no_pulses = 2 ;
+    let np_start = duration+ip_duration ;
+    let np_end   = duration*2.+ip_duration ;
+
+    let prf         = getNum( "prf"             ) ;
+    let prp         = 1.e3/(prf) ;
+
+    let pulse_duration = np_end ;
+    let next_pulse_start= np_end + prp ; 
+
+    let total_time = pulse_duration*no_pulses+prp*(no_pulses-1) ;
+
+
+    let no_points = 1+Math.floor(total_time/0.01) ;
+
+    let ta = new Float32Array(no_points) ;
+    let va = new Float32Array(no_points) ;
+
+    for(let i=0; i<no_points; i++){
+        t = i*0.01 ;
+        ta[i]=t ;
+        va[i] = calculatePulse(t) ;
+    }
+    
+    var layout = {
+        margin : { t: 36 }  ,
+
+        title: {
+            text:'Waveform of two consecutive biphasic pulses',
+            font: {
+                family: 'Courier New, monospace',
+                size: 10
+             },
+            xref: 'paper',
+            x: -0.1,
+            //y: 1.5
+        },
+        
+        xaxis: {
+            title: {
+                text: 'time [us]',
+                font: {
+                    family: 'Courier New, monospace',
+                    size: 12,
+                    color: '#7f7f7f'
+                }
+            },
+        },
+        
+        yaxis: {
+            title: {
+                text: 'V/V_p',
+                font: {
+                    family: 'Courier New, monospace',
+                    size: 12,
+                    color: '#7f7f7f'
+                }
+            }
+        }
+    };
+
+    Plotly.newPlot( waveformPlot, [{
+        x: ta,
+        y: va }], layout, {showSendToCloud:true} );
+}
+
+</script>
+
+</body>

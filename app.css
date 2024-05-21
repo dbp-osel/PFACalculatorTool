@@ -1,0 +1,137 @@
+:root{
+    --fda-black     : #2E2925 ;
+    --fda-dark-gray : #6D6E71 ;
+    --fda-blue      : #007CBA ;
+    --fda-dark-blue : #222C67 ;
+    --fda-white     : #ffffff ;
+}
+.content{
+    min-width: 1400px
+}
+
+.col1, .col2{
+    width : 50% ;
+    margin: 10px ;
+    background-color: white ;
+    vertical-align: top ;
+}
+
+h1{
+    text-align      :center;
+    color           : var(--fda-white);
+    background-color: var(--fda-dark-blue);
+    padding : 10px ;
+    border-radius   : 10px;
+}
+
+h2 {
+    color: var(--fda-white);
+    background-color: var(--fda-black) ;
+    padding-left    : 10px ;
+    padding-top     : 2.5px ;
+    padding-bottom  : 2.5px ;
+
+    border-radius   : 10px;
+}
+
+h3 {
+    color           : var(--fda-white);
+    background-color: var(--fda-dark-gray) ;
+    padding-left    : 10px ;
+    padding-top     : 2.5px ;
+    padding-bottom  : 2.5px ;
+    border-radius   : 10px;
+}
+
+p{
+    padding-left    : 10px ;
+    padding-right   : 10px ;
+    padding-top     : 3px ;
+    padding-bottom  : 3px ;
+    text-align      : justify ;
+}
+
+ol,ul{
+    padding-left    : 40px ;
+    padding-right   : 20px ;
+    text-align      : justify ;
+}
+
+
+
+table{
+    padding-left    :10px ;
+    padding-right   :30px ;
+}
+
+.note{
+    padding-left : 10px ;
+    padding-right : 3px ;
+    border-radius : 5px ;
+}
+
+
+.material-icons{
+    font-size       :14px;
+}
+
+
+.tooltip {
+    position        : relative;
+    display         : inline-block;
+}
+.tooltip:hover{
+    font-weight: 900
+}
+
+.tooltip .tooltiptext {
+    visibility      : hidden;
+    min-width       : 170px;
+    background-color: var(--fda-blue);
+    color           : #fff;
+    text-align      : center;
+    border-radius   : 6px;
+    padding         : 5px 0;
+    position        : absolute;
+    z-index         : 1;
+    top             : 107%;
+    left            : 0% ;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility      : visible;
+}
+
+img { 
+    display         : block ;
+}
+
+canvas { 
+    display : block ;
+    padding-left : 0 ;
+    padding-right: 0 ;
+    width: 500px ;
+    height : 400px ;
+}
+
+.center {
+    margin: auto;
+}
+
+.lesion { 
+    display : block ;
+    padding-left : 0 ;
+    padding-right: 0 ;
+    padding-bottom: 3px ;
+    margin-left: auto ;
+    margin-right: auto ;
+    width: 90% ;
+   /* align-items: center; */
+}
+
+.vltmap {
+    width : 70% ;
+    overfloaw: hidden ;
+    visibility: hidden ;
+}
+

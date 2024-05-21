@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>PFA Calculator CoU</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src='https://cdn.plot.ly/plotly-2.27.0.min.js'></script>
+    <script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    tags : 'ams',
+  }
+};
+</script>
+<script type="text/javascript" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js?config=TeX-AMS-MML_SVG">
+</script>
+
+<!-- Online libraries and dependencies -->
+<script src='https://abubujs.org/libs/Abubu.latest.js'
+	    type='text/javascript'></script>
+<script 
+src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js'  
+type="text/javascript" charset="utf-8">
+</script>
+<script 
+    src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/mode-glsl.js'>
+</script>
+<script 
+    src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/theme-tomorrow.js'>
+</script>
+<script
+    src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/keybinding-vim.js'>
+</script>
+<script 
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/underscore@1.13.6/underscore-umd-min.js"></script>
+<!-- local version of dependencies -->
+<!--
+<script src='/abubujs/libs/Abubu.latest.js'
+	    type='text/javascript'></script>
+<script 
+src='/libs/cdnjs.cloudflare.com_ajax_libs_ace_1.4.5_ace.js'  
+type="text/javascript" charset="utf-8">
+</script>
+<script 
+    src='/libs/cdnjs.cloudflare.com_ajax_libs_ace_1.4.5_mode-glsl.js'>
+</script>
+<script 
+    src='/libs/cdnjs.cloudflare.com_ajax_libs_ace_1.4.5_theme-tomorrow.js'>
+</script>
+<script
+    src='/libs/cdnjs.cloudflare.com_ajax_libs_ace_1.4.5_keybinding-vim.js'>
+</script>
+<script 
+    src='/libs/ajax.googleapis.com_ajax_libs_jquery_3.4.1_jquery.min.js'>
+</script>
+<script src='/libs/cdnjs.cloudflare.com_ajax_libs_jszip_3.6.0_jszip.min.js'></script>
+<script src='/libs/cdn.jsdelivr.net_npm_underscore@1.13.6_underscore-umd-min.js'></script>
+-->
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<link rel="stylesheet" href="app.css">
+
+</head>
+
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<!-- main body of the html -->
+<!--&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+<body>
+<img id='scaledENormImg' src='resources/scaled_efield_norm.png' style='display:none'>
+
+<div class=content>
+    
+<h1>Estimation of Irreversible Electroporation (IRE) Electric Field Threshold (EFT), Area and associated Adiabatic Heating (AH) dependent on Pulsed Electric Field (PEF) waveform parameters</h1>
+<!--====================================================================-->
+<!-- Context of use -->
+<!--====================================================================-->
+<h2 id='CoU'>Context of Use</h2>
+<p>Pulsed Field Ablation (PFA) is a novel method for cardiac 
+ablation, relying on irreversible electroporation induced 
+by high-energy pulsed electric fields (PEFs) to create 
+localized lesions in the heart atria. A significant challenge 
+in optimizing PFA treatments is determining the lethal electric 
+field threshold (EFT), which governs ablation volume and 
+varies with PEF waveform parameters. The lack of 
+standardized nonclinical testing methods has left 
+optimal EFTs for cardiac ablation uncertain.</p>
+
+<p>The impact of a range of clinically relevant biphasic 
+pulse parameters on lethal EFT and adiabatic heating (AH) 
+was evaluated on human induced pluripotent stem 
+cell-derived cardiomyocytes (hiPSC-CMs) monolayers [1].
+Cell death areas were assessed using fluorescent dyes and 
+confocal microscopy, while lethal EFTs were quantified 
+through comparison with electric field numerical 
+simulations.</p>
+
+<p>Fitting of these results through machine learning 
+algorithms were used to develop this open-source online 
+calculator.</p>
+
+<p>This calculator receives as input:</p>
+<ul>
+    <li>No. of Pulses, number of pulses in 1 train</li>
+
+    <li>Phase duration $[\mu s]$, time duration of one 
+        phase composing the biphasic pulse</li>
+
+    <li>PRF $[kHz]$, Pulse Repetition Frequency: inverse 
+        of the time elapsed between the beginning of a 
+        pulse and the beginning of the following pulse</li>
+
+    <li>Interphase duration $[\mu s]$, time between the two 
+        phases with different polarity</li>
+
+    <li>Density $[g/cm^3]$, mass density of the sample under
+        test. Use values from your experimental settings. 
+        If measurements are not available consider using literature, 
+        e.g, 
+        <a href="https://itis.swiss/virtual-population/tissue-properties/database/density/">
+        the density database from IT'IS.</a></li>
+
+    <li>Electrical conductivity $[mS/cm]$, electrical conductivity 
+        of the sample under test.
+        Use values from your experimental settings. If measurements 
+        are not available, consider using literature, e.g., 
+        <a href="https://itis.swiss/virtual-population/tissue-properties/database/dielectric-properties">the dialectric properties database from IT'IS.</a>
+    </li>
+</ul>
+
+<p>And provides as outputs:</p>
+
+<ul>
+    <li>Lethal EFT $[kV/cm]$, lethal Electric Field Threshold estimated from in vitro experiments on hiPSC-CMs</li>
+    <li>AD $[mJ/g]$, Absorbed Dose at the lethal EFT 
+        computed using analytical formulas from&nbsp;[2], 
+        Eq&nbsp;\eqref{eq:AD}</li>
+
+    <li>AH [C], Adiabatic Heating at the lethal EFT 
+        computed using analytical formulas from&nbsp;[2], 
+        Eq&nbsp;\eqref{eq:AH}</li>
+
+    <li>Cell death area $[mm^2]$, area estimated from lethal 
+        EFT and pre-computed numerical modeling using 
+        COMSOL Multiphysics and specific to this electrode 
+        geometry</li>
+</ul>
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!-- analytical formulas for adiabatic heating -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<h3>Analytical fromulas for adiabatic heating estimation</h3>
+\begin{equation}
+    AD= \sigma (E^2/\rho) . \tau . 10^6
+    \label{eq:AD}
+\end{equation}
+
+\begin{equation}
+AH = AD \times 0.24/1000
+\label{eq:AH}
+\end{equation}
+
+<p>where $\tau = 2tp$ is the pulse duration $[s]$, 
+$E$ is the electric field $[kV/cm]$ at the cell 
+death threshold, $\rho$ is the density $[g/cm^3]$ 
+and $\sigma$ is the electrical conductivity $[mS/cm]$ 
+of the sample under testing.</p>
+
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!-- limitations of use -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<h3 id='limitations'>Limitations of use</h3>
+<p> 
+While this study provides valuable insights into 
+lethal EFT in hiPSC-CMs and its dependence on 
+various PEF parameters, it has some limitations.</p>
+<ol>
+    <li>The calculator can be used only in the range 
+        of parameters studied (i.e., biphasic pulses, phase 
+        duration 0.2-10&nbsp;$\mu s$, interphase delay $1 \mu s$,
+        number of biphasic pulses 50-400, pulse repetition 
+        frequency $2-200 kHz$, train number 1). The log-log 
+        fitting is carried out to be used only for interpolation. 
+        <b>The fit was NOT tested for extrapolation and extension 
+            of the range of parameters of the study</b>.</li>
+
+    <li>The log-log fitting is an attempt to best fit 
+        the experimental results by minimizing the residual 
+        sum of the squares. It should be noted that this 
+        fitting was not designed from physics’ first 
+        principles, and a model that explains the intricate 
+        dependencies of the lethal EFT based on first 
+        principles is yet to be proposed.</li>
+
+    <li>This method does not take into account the possibility 
+        of neuromuscular stimulation, which could potentially 
+        influence the choice of specific parameters, such as the 
+        PRF.</li>
+
+    <li>The use of hiPSC-CMs, while minimizing species and 
+        biological disparities, does not fully replicate the 
+        complex in vivo environment of the heart. 
+        Further studies in animal models are necessary to 
+        validate the efficacy of the developed open-source 
+        calculator in real-world applications.</li>
+</ol>
+
+<h3>References</h3>
+<table class=refs>
+    <tr>
+        <td>[1]</td>
+        <td>M. Casciola, T. K. Feaster, M. J. Caiola, D. Keck, 
+            and K. Blinova, "Human in vitro assay for 
+            irreversible electroporation cardiac ablation," 
+            Frontiers in physiology, vol. 13, p. 1064168doi: 
+            10.3389/fphys.2022.1064168</td>
+    </tr>
+    <tr>
+        <td>[2]</td>
+        <td>B. L. Ibey, S. Xiao, K. H. Schoenbach, M. R. Murphy, 
+            and A. G. Pakhomov, "Plasma membrane permeabilization 
+            by 60- and 600-ns electric pulses is determined by the 
+            absorbed dose," Bioelectromagnetics, vol. 30, no. 2, 
+            pp. 92-9, Feb 2009, doi: 10.1002/bem.20451.</td>
+    </tr>
+</table>
+</div><!-- end of content -->
+<script>
+$(document).ready(function(){
+    $("table[class=refs] td:nth-child(1)").css("min-width", '20px') ;
+    $("table[class=refs] td").css("text-align", 'left') ;
+    $("table[class=refs] td").css("vertical-align", 'top') ;
+}) ;
+</script>
+</body>
