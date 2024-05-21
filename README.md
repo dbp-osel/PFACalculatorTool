@@ -2,7 +2,7 @@
 This tool is developed to estimate the lethal PFA from input pulse parameters.
 
 ## Running the Program
-You can directly run the program in this package by visiting [the live PFACalculatorTool Page](https://dbp-osel.github.io/PFACalculatorTool/) and follow the instructions on the page. 
+You can directly run the program in this package by visiting [the live PFA Calculator webpage](https://dbp-osel.github.io/PFACalculatorTool/) and follow the instructions on the page. 
 
 Alternatively, you can clone this repository to your local disk by issuing the following command on the command line:
 ```bash
